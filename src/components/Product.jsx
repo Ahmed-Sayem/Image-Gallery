@@ -1,7 +1,10 @@
 function Product({ data, isSelected, onSelect, onDeselect }) {
   const isAddPhoto = data.alt === 'Add Photo';
 
-  const toggleSelect = () => {
+  const toggleSelect = (e) => {
+    if (e.target.type === 'checkbox') {
+      return; 
+    }
     if (isSelected) {
       onDeselect();
     } else {
@@ -17,5 +20,4 @@ function Product({ data, isSelected, onSelect, onDeselect }) {
     </div>
   );
 }
-
 export default Product;

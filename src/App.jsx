@@ -61,7 +61,8 @@ function App() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImages(prevImages => [...prevImages.slice(0, -1), { id: Date.now(), src: reader.result, alt: 'Uploaded image' }, initialImages[initialImages.length - 1]]);
+        setImages(prevImages => [...prevImages.slice(0, -1), { id: Date.now(), src: reader.result, alt: 'Uploaded image' }, 
+                    initialImages[initialImages.length - 1]]);
       }
       reader.readAsDataURL(file);
     }
@@ -77,16 +78,21 @@ function App() {
     
     const draggedItemId = parseInt(e.dataTransfer.getData("text/plain"));
     const dropTargetId = id;
-
+  
+    if (draggedItemId === 'add-image' || dropTargetId === 'add-image') {
+      return;
+    }
+  
     const draggedItem = images.find((img) => img.id === draggedItemId);
     const dropTargetIndex = images.findIndex((img) => img.id === dropTargetId);
-
+  
     const newImages = [...images];
     newImages.splice(images.findIndex((img) => img.id === draggedItemId), 1);
     newImages.splice(dropTargetIndex, 0, draggedItem);
-
+  
     setImages(newImages);
   };
+  
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -101,7 +107,7 @@ function App() {
           <>
             <div className='checkbox-label'>
               <label>
-                <input type="checkbox" checked={selected.length === images.length - 1} onChange={handleSelectAll} />
+                <input type="checkbox" className="selectAll-checkbox" checked={selected.length === images.length - 1} onChange={handleSelectAll} />
                 Select All
               </label>
               <strong className="selected-count"> ({selected.length} selected)</strong>
